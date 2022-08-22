@@ -8,5 +8,4 @@ class LogInPageFragment : BaseFragment<FragmentLogInPageBinding, LogInPageViewMo
     LogInPageViewModel::class.java, false){
     override fun getStart() {
     }
-
 }
