@@ -8,7 +8,6 @@ import androidx.navigation.fragment.findNavController
 import com.kito.classwork6.BaseFragment
 import com.kito.classwork6.databinding.FragmentRegisterPageBinding
 import com.kito.classwork6.retrofitclient.ResultHendler
-import com.kito.homework15.ui.registerpage.RegisterPageFragmentDirections
 import kotlinx.coroutines.launch
 
 class RegisterPageFragment : BaseFragment<FragmentRegisterPageBinding, RegisterPageViewModel>(

@@ -11,15 +11,15 @@
         android:label="fragment_welcome_page"
         tools:layout="@layout/fragment_welcome_page" >
         <action
-            android:id="@+id/action_welcomePageFragment_to_logInPageFragment"
-            app:destination="@id/logInPageFragment" />
-        <action
             android:id="@+id/action_welcomePageFragment_to_registerPageFragment"
             app:destination="@id/registerPageFragment" />
+        <action
+            android:id="@+id/action_welcomePageFragment_to_logInPageFragment"
+            app:destination="@id/logInPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/logInPageFragment"
-        android:name="com.kito.homework15.ui.loginpage.LogInPageFragment"
+        android:name="com.kito.classwork6.ui.loginpage.LogInPageFragment"
         android:label="fragment_log_in_page"
         tools:layout="@layout/fragment_log_in_page" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerPageFragment"
-        android:name="com.kito.homework15.ui.registerpage.RegisterPageFragment"
+        android:name="com.kito.classwork6.ui.registerpage.RegisterPageFragment"
         android:label="fragment_register_page"
         tools:layout="@layout/fragment_register_page" >
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.kito.homework15.ui.user.UserFragment"
+        android:name="com.kito.classwork6.ui.user.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" />
 </navigation>
