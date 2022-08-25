@@ -1,69 +1,44 @@
 package com.kito.classwork6.ui.registerpage
 
 import android.widget.Toast
-import androidx.lifecycle.Lifecycle
+import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.kito.classwork6.BaseFragment
 import com.kito.classwork6.databinding.FragmentRegisterPageBinding
-import com.kito.classwork6.retrofitclient.ResultHendler
+import com.kito.classwork6.models.Request
+import com.kito.classwork6.utils.FragmentResUtils
+import com.kito.classwork6.utils.ResponseHandler
 import kotlinx.coroutines.launch
 
-class RegisterPageFragment : BaseFragment<FragmentRegisterPageBinding, RegisterPageViewModel>(
-    FragmentRegisterPageBinding::inflate,
-    RegisterPageViewModel::class.java, false
-) {
+class RegisterPageFragment :
+    BaseFragment<FragmentRegisterPageBinding>(FragmentRegisterPageBinding::inflate) {
 
-    private fun observe() {
-        binding.let {
+    private val viewModel: RegisterPageViewModel by viewModels()
 
-            with(it) {
-                when {
-                    etEmail.text.toString().isEmpty() -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Email field must not be empty",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+    override fun viewCreated() {
 
-                    etPass.text.toString().isEmpty() -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Password field must not be empty",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        onClickListeners()
 
-                    etUsername.text.toString().isEmpty() -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Username field must not be empty",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    else -> {
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                                viewModel.register(
-                                    etEmail.text.toString(),
-                                    etPass.text.toString()
-                                ).collect {
-                                    when (it) {
-                                        is ResultHendler.Success -> {
-                                            register()
-                                        }
-                                        is ResultHendler.Error -> {
-                                            Toast.makeText(
-                                                requireContext(),
-                                                it.errorMSg,
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    }
-                                }
-                            }
+    }
+
+    private fun onClickListeners() {
+        binding.btnReg.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.getRegisterFlow(getUserInfo()).collect {
+                    when (it) {
+                        is ResponseHandler.Success<*> -> {
+                            buildFragmentResult()
+                            findNavController().navigate(RegisterPageFragmentDirections.actionRegisterPageFragmentToLogInPageFragment())
+                        }
+                        is ResponseHandler.Error -> {
+                            Toast.makeText(context, it.error, Toast.LENGTH_SHORT).show()
+                        }
+                        is ResponseHandler.Loader -> {
+                            binding.progressBar.isVisible = it.isLoading
                         }
                     }
                 }
@@ -71,16 +46,19 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterPageBinding, RegisterP
         }
     }
 
-    private fun register() {
-        findNavController().navigate(
-            RegisterPageFragmentDirections.actionRegisterPageFragmentToUserFragment()
+    private fun buildFragmentResult() {
+        setFragmentResult(
+            requestKey = FragmentResUtils.AUTH_KEY,
+            result = bundleOf(
+                FragmentResUtils.EMAIL to binding.etEmail.text.toString(),
+                FragmentResUtils.PASSWORD to binding.etPass.text.toString()
+            )
         )
     }
 
-    override fun getStart() {
-        binding.btnReg.setOnClickListener {
-            //observe()
-            register()
-        }
-    }
+    private fun getUserInfo() = Request(
+        binding.etEmail.text.toString(),
+        binding.etPass.text.toString()
+    )
+
 }

@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/logreg_graph"
-    app:startDestination="@id/welcomePageFragment">
+    app:startDestination="@id/logInPageFragment">
 
     <fragment
-        android:id="@+id/welcomePageFragment"
-        android:name="com.kito.homework15.ui.welcomepage.WelcomePageFragment"
+        android:id="@+id/HomePageFragment"
+        android:name="com.kito.classwork6.ui.homepage.HomePageFragment"
         android:label="fragment_welcome_page"
-        tools:layout="@layout/fragment_welcome_page" >
+        tools:layout="@layout/fragment_home_page" >
+        <argument
+            android:name="token"
+            app:argType="string" />
         <action
-            android:id="@+id/action_welcomePageFragment_to_registerPageFragment"
-            app:destination="@id/registerPageFragment" />
-        <action
-            android:id="@+id/action_welcomePageFragment_to_logInPageFragment"
+            android:id="@+id/action_HomePageFragment_to_logInPageFragment"
             app:destination="@id/logInPageFragment" />
     </fragment>
     <fragment
@@ -23,8 +23,11 @@
         android:label="fragment_log_in_page"
         tools:layout="@layout/fragment_log_in_page" >
         <action
-            android:id="@+id/action_logInPageFragment_to_userFragment"
-            app:destination="@id/userFragment" />
+            android:id="@+id/action_logInPageFragment_to_registerPageFragment"
+            app:destination="@id/registerPageFragment" />
+        <action
+            android:id="@+id/action_logInPageFragment_to_HomePageFragment"
+            app:destination="@id/HomePageFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerPageFragment"
@@ -32,12 +35,7 @@
         android:label="fragment_register_page"
         tools:layout="@layout/fragment_register_page" >
         <action
-            android:id="@+id/action_registerPageFragment_to_userFragment"
-            app:destination="@id/userFragment" />
+            android:id="@+id/action_registerPageFragment_to_logInPageFragment"
+            app:destination="@id/logInPageFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/userFragment"
-        android:name="com.kito.classwork6.ui.user.UserFragment"
-        android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
 </navigation>
